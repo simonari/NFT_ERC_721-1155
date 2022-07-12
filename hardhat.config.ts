@@ -1,5 +1,6 @@
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-etherscan";
+import "solidity-coverage";
 
 import {privateKey} from "./private_key";
 
