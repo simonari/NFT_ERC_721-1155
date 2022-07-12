@@ -41,7 +41,7 @@ describe("ERC721 Test", async () => {
             let tokenCounterOwner: number = 0;
             let tokenCounterAddr1: number = 0;
             
-            await contract.connect(owner).mint(owner.address);
+            await contract.connect(owner).mintNFT(owner.address, "someURI");
             tokenCounterSummary++;
             tokenCounterOwner++;
 
@@ -51,7 +51,7 @@ describe("ERC721 Test", async () => {
             .to.equal(owner.address);
             
             
-            await contract.mint(owner.address);
+            await contract.mintNFT(owner.address, "someURI");
             tokenCounterSummary++;
             tokenCounterOwner++;
 
@@ -61,7 +61,7 @@ describe("ERC721 Test", async () => {
             .to.equal(owner.address);
             
             
-            await contract.mint(addr1.address);
+            await contract.mintNFT(addr1.address, "someURI");
             tokenCounterSummary++;
             tokenCounterAddr1++;
 
@@ -72,7 +72,7 @@ describe("ERC721 Test", async () => {
         })
 
         it("Should revert if creator isn't contract owner", async () => {
-            await expect(contract.connect(addr1).mint(owner.address))
+            await expect(contract.connect(addr1).mintNFT(owner.address, "someURI"))
             .to.be.revertedWith("Ownable: caller is not the owner");
             
 
@@ -93,7 +93,7 @@ describe("ERC721 Test", async () => {
                 for (let j = 0; j < 2; j++) {
                     tokenOwners[i][j] = tokenCreated;
                     tokenCreated++;
-                    await contract.mint(signers[i].address);
+                    await contract.mintNFT(signers[i].address, "someURI");
                 }
             }
        })

@@ -10,20 +10,20 @@ import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 contract MyERC721 is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    
-    address private _minter;
+    string public baseTokenURI;
 
     constructor(
-        string memory name_, 
-        string memory symbol_) 
-        ERC721(name_, symbol_) {}
+        string memory _name, 
+        string memory _symbol) 
+        ERC721(_name, _symbol) {
+        }
 
-
-    function mint(address _to) public onlyOwner() returns (uint256)  {
+    function mintNFT(address _to, string memory _tokenURI) public onlyOwner {
         _tokenIds.increment();
 
-        _mint(_to, _tokenIds.current());
-        _setTokenURI(_tokenIds.current(), tokenURI(_tokenIds.current()));
-        return _tokenIds.current();
+        uint256 newTokenID = _tokenIds.current();
+
+        _mint(_to, newTokenID);
+        _setTokenURI(newTokenID, _tokenURI);
     }
 }
