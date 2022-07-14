@@ -163,8 +163,54 @@ describe("ERC1155 Test", async () => {
                     balances.push(balancesBN[i].toNumber());
                 }
 
-                expect(balances)
-                .to.equal([tokenAmountsStoredOwner[0], tokenAmountsStoredAddr1[1]])
+                expect(balances[0])
+                .to.equal(tokenAmountsStoredOwner[0])
+                expect(balances[1])
+                .to.equal(tokenAmountsStoredAddr1[1])
+
+
+                await expect(contract
+                .connect(addr1)
+                .burnBatchNFT(
+                    owner.address, 
+                    [tokenIds[0], tokenIds[2]], 
+                    [tokenAmountsToMintAndBurn[1], tokenAmountsToMintAndBurn[2]]))
+                .to.be.revertedWith("Ownable: caller is not the owner");
+
+
+                await contract
+                .burnBatchNFT(
+                    owner.address, 
+                    [tokenIds[0], tokenIds[2], tokenIds[1]], 
+                    [tokenAmountsToMintAndBurn[1], tokenAmountsToMintAndBurn[2], tokenAmountsToMintAndBurn[0]])
+
+                tokenAmountsStoredOwner[0] -= tokenAmountsToMintAndBurn[1];
+                tokenAmountsStoredOwner[2] -= tokenAmountsToMintAndBurn[2];
+                tokenAmountsStoredOwner[1] -= tokenAmountsToMintAndBurn[0];
+                    
+                await contract
+                .burnBatchNFT(
+                    addr1.address, 
+                    [tokenIds[2], tokenIds[1], tokenIds[0]], 
+                    [tokenAmountsToMintAndBurn[2], tokenAmountsToMintAndBurn[0], tokenAmountsToMintAndBurn[1]])
+
+                tokenAmountsStoredAddr1[2] -= tokenAmountsToMintAndBurn[2];
+                tokenAmountsStoredAddr1[1] -= tokenAmountsToMintAndBurn[0];
+                tokenAmountsStoredAddr1[0] -= tokenAmountsToMintAndBurn[1];
+
+                balancesBN = await contract
+                .balanceOfBatch(
+                    [owner.address, addr1.address],
+                    [tokenIds[0], tokenIds[1]])
+    
+                for (let i = 0; i < balancesBN.length; i++) {
+                    balances[i] = balancesBN[i].toNumber();
+                }
+
+                expect(balances[0])
+                .to.equal(tokenAmountsStoredOwner[0])
+                expect(balances[1])
+                .to.equal(tokenAmountsStoredAddr1[1])
             })
         })
     })
