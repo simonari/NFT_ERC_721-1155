@@ -5,6 +5,7 @@ import "solidity-coverage";
 import {privateKey} from "./private_key";
 
 import "./tasks/mint721";
+import "./tasks/mint1155";
 
 export default {
   solidity: "0.8.9",
