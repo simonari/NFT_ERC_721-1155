@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 
 async function main() {
     const Contract = await ethers.getContractFactory("MyERC1155");
-    const contract = await Contract.deploy("");
+    const contract = await Contract.deploy();
 
     await contract.deployed();
     console.log(`Contract deployed on:\n ${contract.address}`);
